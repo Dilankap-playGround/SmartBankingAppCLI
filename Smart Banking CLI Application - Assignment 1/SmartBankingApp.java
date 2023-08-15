@@ -84,7 +84,8 @@ public class SmartBankingApp {
                     i++;
                     String name;
                     boolean valid;
-                  
+                    double initialAccountBalanceDouble;
+
                     do {
                         valid = true;
                         System.out.print("\tName: ");
@@ -104,38 +105,65 @@ public class SmartBankingApp {
                         }
                     } while (!valid);
                     String initialAccountBalance;
-                    loop2:
-                    do {
+                    loop2: do {
                         valid = true;
                         System.out.printf("\tInitial Deposit: ");
                         initialAccountBalance = SCANNER.nextLine();
-                        for (int j = 0; j < initialAccountBalance.length() - 3; j++) {
-                            if (!Character.isDigit(initialAccountBalance.charAt(j))) {
-                                valid = false;
-                                System.out.printf(ERROR_MSG, "Enter a Valid Amount");
-                                continue loop2;
-                            }
-                        }
-                        if (!(initialAccountBalance.charAt((initialAccountBalance.length() - 3)) == '.' || Character
-                                .isDigit(initialAccountBalance.charAt(initialAccountBalance.length() - 3)))) {
-                            valid = false;
-                            System.out.printf(ERROR_MSG, "Enter a Valid Amount ");
-                            continue loop2;
-
-                        } else {
-                            for (int j = initialAccountBalance.length() - 2; j < initialAccountBalance.length(); j++) {
+                        if (initialAccountBalance.length() > 4) {
+                            for (int j = 0; j < initialAccountBalance.length() - 3; j++) {
                                 if (!Character.isDigit(initialAccountBalance.charAt(j))) {
                                     valid = false;
                                     System.out.printf(ERROR_MSG, "Enter a Valid Amount");
                                     continue loop2;
                                 }
                             }
+                            if (!(initialAccountBalance.charAt((initialAccountBalance.length() - 3)) == '.' || Character
+                                    .isDigit(initialAccountBalance.charAt(initialAccountBalance.length() - 3)))) {
+                                valid = false;
+                                System.out.printf(ERROR_MSG, "Enter a Valid Amount ");
+                                continue loop2;
+
+                            } else {
+                                for (int j = initialAccountBalance.length() - 2; j < initialAccountBalance
+                                        .length(); j++) {
+                                    if (!Character.isDigit(initialAccountBalance.charAt(j))) {
+                                        valid = false;
+                                        System.out.printf(ERROR_MSG, "Enter a Valid Amount");
+                                        continue loop2;
+                                    }
+                                }
+
+                            }
+                        }else{
+                             for (int j = 0; j < initialAccountBalance.length(); j++) {
+                                if (!Character.isDigit(initialAccountBalance.charAt(j))) {
+                                    valid = false;
+                                    System.out.printf(ERROR_MSG, "Enter a Valid Amount");
+                                    continue loop2;
+                                }
+                            }
+                        }
+
+                        if (valid) {
+                            initialAccountBalanceDouble = Double.parseDouble(initialAccountBalance);
+                            if (initialAccountBalanceDouble < 5000) {
+                                System.out.printf(ERROR_MSG,
+                                        "Insufficient Initial Deposit Minimum Rs.5000.00 Should be deposited");
+                                System.out.print("\tDo you Want to Deposit more?(y/n)");
+                                if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) {
+                                    valid = false;
+                                    continue;
+                                } else {
+                                    continue loop2;
+                                }
+
+                            }
 
                         }
 
                     } while (!valid);
-                    double initialAccountBalanceDouble = Double.parseDouble(initialAccountBalance);
-                    System.out.printf("\tDeposited: "+"%s%,.2f", "Rs.", initialAccountBalanceDouble);
+                    initialAccountBalanceDouble = Double.parseDouble(initialAccountBalance);
+                    System.out.printf("\tDeposited: " + "%s%,.2f", "Rs.", initialAccountBalanceDouble);
 
                     String[] newAccountNumbers = new String[accountNumbers.length + 1];
                     String[] newCustomerNames = new String[customerNames.length + 1];
@@ -143,14 +171,14 @@ public class SmartBankingApp {
                     for (int j = 0; j < accountNumbers.length; j++) {
                         newAccountNumbers[j] = accountNumbers[j];
                         newCustomerNames[j] = customerNames[j];
-                        newAccountBalances[j]= accountBalance[j];
+                        newAccountBalances[j] = accountBalance[j];
                     }
                     newAccountNumbers[newAccountNumbers.length - 1] = id;
                     newCustomerNames[newAccountNumbers.length - 1] = name;
-                    newAccountBalances[newAccountNumbers.length-1] =initialAccountBalanceDouble;
+                    newAccountBalances[newAccountNumbers.length - 1] = initialAccountBalanceDouble;
                     accountNumbers = newAccountNumbers;
                     customerNames = newCustomerNames;
-                    accountBalance=newAccountBalances;
+                    accountBalance = newAccountBalances;
 
                     System.out.println();
                     System.out.printf(SUCCESS_MSG,
