@@ -105,7 +105,8 @@ public class SmartBankingApp {
                         }
                     } while (!valid);
                     String initialAccountBalance;
-                    loop2: do {
+                    loop2:
+                     do {
                         valid = true;
                         System.out.printf("\tInitial Deposit: ");
                         initialAccountBalance = SCANNER.nextLine();
@@ -154,7 +155,9 @@ public class SmartBankingApp {
                                     valid = false;
                                     continue;
                                 } else {
-                                    continue loop2;
+                                    valid=false;
+                                    i--;
+                                    continue loop1;
                                 }
 
                             }
@@ -188,6 +191,8 @@ public class SmartBankingApp {
                         continue;
                     screen = DASHBOARD;
                     break;
+                case DEPOSIT:
+
             }
 
         } while (true);
